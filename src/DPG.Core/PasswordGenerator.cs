@@ -15,6 +15,8 @@ public class PasswordGenerator
     private const string ENCODE_MODE = "encode";
 
     private const string PASSWORD_LENGTH_OPTION = "--password-length";
+    private const string ENABLE_UPPERCASE_CHARS_OPTION = "--enable-uppercase-chars";
+    private const string ENABLE_LOWERCASE_CHARS_OPTION = "--enable-lowercase-chars";
 
     private const int DEFAULT_PASSWORD_LENGTH = 16;
 
@@ -39,7 +41,7 @@ public class PasswordGenerator
                     return ShowHelpMessage();
                 }
 
-                return string.Empty;
+                goto case MODE_ALIAS;
 
             case MODE_ALIAS:
             case MODE_COMMAND_TEXT:
@@ -91,7 +93,8 @@ public class PasswordGenerator
             throw new Exception("Invalid password length provided.");
         }
 
-        Console.WriteLine($"Password length provided: {passwordLength}");
+        var enableUppercaseChars = commandLineArgs.Contains(ENABLE_UPPERCASE_CHARS_OPTION);
+        var enableLowercaseChars = commandLineArgs.Contains(ENABLE_LOWERCASE_CHARS_OPTION);
 
         return string.Empty;
     }
