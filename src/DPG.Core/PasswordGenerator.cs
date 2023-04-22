@@ -21,7 +21,8 @@ public class PasswordGenerator
             return ShowHelpMessage();
         }
 
-        if (commandLineArgs.Contains(HELP_ALIAS) || commandLineArgs.Contains(HELP_COMMAND_TEXT))
+        if ((commandLineArgs.Contains(HELP_ALIAS) || commandLineArgs.Contains(HELP_COMMAND_TEXT))
+            && commandLineArgs.Length == 1)
         {
             return ShowHelpMessage();
         }
