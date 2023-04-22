@@ -4,13 +4,11 @@ namespace DPG.CLI;
 
 internal class Program
 {
-   static void Main(string[] args)
-   {
-      var passwordGenerator = new PasswordGenerator(args);
+    static void Main(string[] args)
+    {
+        var passwordGenerator = new PasswordGenerator(args);
+        var result = passwordGenerator.Generate();
 
-      if (args.Length == 0)
-      {
-         Console.WriteLine("dpg <command>");
-      }
-   }
+        Console.WriteLine(result);
+    }
 }
