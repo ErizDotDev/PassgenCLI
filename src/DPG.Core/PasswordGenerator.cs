@@ -17,6 +17,8 @@ public class PasswordGenerator
     private const string PASSWORD_LENGTH_OPTION = "--password-length";
     private const string ENABLE_UPPERCASE_CHARS_OPTION = "--enable-uppercase-chars";
     private const string ENABLE_LOWERCASE_CHARS_OPTION = "--enable-lowercase-chars";
+    private const string ENABLE_NUMERIC_CHARS_OPTION = "--enable-numeric-chars";
+    private const string ENABLE_SPECIAL_CHARS_OPTION = "--enable-special-chars";
 
     private const int DEFAULT_PASSWORD_LENGTH = 16;
 
@@ -95,6 +97,8 @@ public class PasswordGenerator
 
         var enableUppercaseChars = commandLineArgs.Contains(ENABLE_UPPERCASE_CHARS_OPTION);
         var enableLowercaseChars = commandLineArgs.Contains(ENABLE_LOWERCASE_CHARS_OPTION);
+        var enableNumericChars = commandLineArgs.Contains(ENABLE_NUMERIC_CHARS_OPTION);
+        var enableSpecialChars = commandLineArgs.Contains(ENABLE_SPECIAL_CHARS_OPTION);
 
         return string.Empty;
     }
@@ -103,15 +107,17 @@ public class PasswordGenerator
     {
         var modeHelpMessageBuilder = new StringBuilder();
 
-        // TODO: Update the options section to reflect options to be developed for the mode function.
-
         modeHelpMessageBuilder.AppendLine("Set the password generator mode to be used.");
         modeHelpMessageBuilder.AppendLine()
             .AppendLine("Usage")
             .AppendLine("dpg mode [standard | encode] [options]")
             .AppendLine();
         modeHelpMessageBuilder.AppendLine("Options: (Note: Options below are only placeholder values)")
-            .AppendLine("[--password-length <password length>]");
+            .AppendLine("[--password-length <password length>]")
+            .AppendLine("[--enable-uppercase-chars]")
+            .AppendLine("[--enable-lowercase-chars]")
+            .AppendLine("[--enable-numeric-chars]")
+            .AppendLine("[--enable-special-chars]");
 
         return modeHelpMessageBuilder.ToString();
     }
