@@ -6,8 +6,8 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        var passwordGenerator = new PasswordGeneratorDriver(args);
-        var result = passwordGenerator.Generate();
+        var passwordGeneratorDriver = new PasswordGeneratorDriver(args);
+        var result = passwordGeneratorDriver.Execute();
 
         Console.WriteLine(result);
     }

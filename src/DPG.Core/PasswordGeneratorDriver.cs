@@ -5,6 +5,7 @@ namespace DPG.Core;
 public class PasswordGeneratorDriver
 {
     private string[] commandLineArgs;
+    private readonly PasswordGenerator passwordGenerator;
 
     private const string HELP_ALIAS = "-h";
     private const string HELP_COMMAND_TEXT = "help";
@@ -15,19 +16,20 @@ public class PasswordGeneratorDriver
     private const string ENCODE_MODE = "encode";
 
     private const string PASSWORD_LENGTH_OPTION = "--password-length";
-    private const string ENABLE_UPPERCASE_CHARS_OPTION = "--enable-uppercase-chars";
-    private const string ENABLE_LOWERCASE_CHARS_OPTION = "--enable-lowercase-chars";
-    private const string ENABLE_NUMERIC_CHARS_OPTION = "--enable-numeric-chars";
-    private const string ENABLE_SPECIAL_CHARS_OPTION = "--enable-special-chars";
+    private const string DISABLE_UPPERCASE_CHARS_OPTION = "--disable-uppercase-chars";
+    private const string DISABLE_LOWERCASE_CHARS_OPTION = "--disable-lowercase-chars";
+    private const string DISABLE_NUMERIC_CHARS_OPTION = "--disable-numeric-chars";
+    private const string DISABLE_SPECIAL_CHARS_OPTION = "--disable-special-chars";
 
     private const int DEFAULT_PASSWORD_LENGTH = 16;
 
     public PasswordGeneratorDriver(string[] args)
     {
         commandLineArgs = args;
+        passwordGenerator = new PasswordGenerator();
     }
 
-    public string Generate()
+    public string Execute()
     {
         if (commandLineArgs.Length == 0)
         {
@@ -89,18 +91,28 @@ public class PasswordGeneratorDriver
             var passwordLengthOptionIndex = Array.IndexOf(commandLineArgs, PASSWORD_LENGTH_OPTION);
             passwordLength = GetPasswordLength(passwordLengthOptionIndex);
         }
+        else
+        {
+            passwordLength = DEFAULT_PASSWORD_LENGTH;
+        }
 
         if (passwordLength < 1)
         {
             throw new Exception("Invalid password length provided.");
         }
 
-        var enableUppercaseChars = commandLineArgs.Contains(ENABLE_UPPERCASE_CHARS_OPTION);
-        var enableLowercaseChars = commandLineArgs.Contains(ENABLE_LOWERCASE_CHARS_OPTION);
-        var enableNumericChars = commandLineArgs.Contains(ENABLE_NUMERIC_CHARS_OPTION);
-        var enableSpecialChars = commandLineArgs.Contains(ENABLE_SPECIAL_CHARS_OPTION);
+        var standardModeOptions = new PasswordGeneratorStandardOptions
+        {
+            PasswordLength = passwordLength,
+            EnableUppercaseCharacters = !commandLineArgs.Contains(DISABLE_UPPERCASE_CHARS_OPTION),
+            EnableLowercaseCharacters = !commandLineArgs.Contains(DISABLE_LOWERCASE_CHARS_OPTION),
+            EnableNumericCharacters = !commandLineArgs.Contains(DISABLE_NUMERIC_CHARS_OPTION),
+            EnableSpecialCharacters = !commandLineArgs.Contains(DISABLE_SPECIAL_CHARS_OPTION)
+        };
 
-        return string.Empty;
+        var generatedPassword = passwordGenerator.GeneratePassword(standardModeOptions);
+
+        return generatedPassword;
     }
 
     private string ShowModeHelpMessage()
@@ -114,16 +126,18 @@ public class PasswordGeneratorDriver
             .AppendLine();
         modeHelpMessageBuilder.AppendLine("Options: (Note: Options below are only placeholder values)")
             .AppendLine("[--password-length <password length>]")
-            .AppendLine("[--enable-uppercase-chars]")
-            .AppendLine("[--enable-lowercase-chars]")
-            .AppendLine("[--enable-numeric-chars]")
-            .AppendLine("[--enable-special-chars]");
+            .AppendLine("[--disable-uppercase-chars]")
+            .AppendLine("[--disable-lowercase-chars]")
+            .AppendLine("[--disable-numeric-chars]")
+            .AppendLine("[--disable-special-chars]");
 
         return modeHelpMessageBuilder.ToString();
     }
 
     private int GetPasswordLength(int passwordLengthOptionIndex)
     {
+        Console.WriteLine(passwordLengthOptionIndex);
+
         var passwordLength = DEFAULT_PASSWORD_LENGTH;
 
         if (!int.TryParse(commandLineArgs[passwordLengthOptionIndex + 1], out passwordLength))
