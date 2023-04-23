@@ -2,7 +2,7 @@
 
 namespace DPG.Core;
 
-public class PasswordGenerator
+public class PasswordGeneratorDriver
 {
     private string[] commandLineArgs;
 
@@ -22,7 +22,7 @@ public class PasswordGenerator
 
     private const int DEFAULT_PASSWORD_LENGTH = 16;
 
-    public PasswordGenerator(string[] args)
+    public PasswordGeneratorDriver(string[] args)
     {
         commandLineArgs = args;
     }
