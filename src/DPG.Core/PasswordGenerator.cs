@@ -22,7 +22,6 @@ public class PasswordGenerator
         var password = string.Empty;
 
         var availableCharacters = GetCharacterPool(options);
-
         if (availableCharacters.Count <= 0)
         {
             throw new Exception("No char array selected.");
