@@ -56,4 +56,19 @@ public class GeneratePasswordShould
             var result = classUnderTest.GeneratePassword(options);
         });
     }
+
+    [Fact]
+    public void GeneratePasswordWithoutUppercaseCharacter_GivenDisabledUppercaseCharOption()
+    {
+        var enableUppercaseChar = false;
+        var options = new PasswordGeneratorStandardOptions
+        {
+            EnableUppercaseCharacters = enableUppercaseChar
+        };
+
+        var result = classUnderTest.GeneratePassword(options);
+
+        Assert.NotEmpty(result);
+        Assert.DoesNotMatch(UppercaseCharPattern, result);
+    }
 }
