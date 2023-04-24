@@ -58,6 +58,21 @@ public class GeneratePasswordShould
     }
 
     [Fact]
+    public void ThrowException_GivenPasswordLengthValueOfLessThan0InOptions()
+    {
+        int passwordLength = -6;
+        var options = new PasswordGeneratorStandardOptions()
+        {
+            PasswordLength = passwordLength
+        };
+
+        Assert.Throws<Exception>(() =>
+        {
+            var result = classUnderTest.GeneratePassword(options);
+        });
+    }
+
+    [Fact]
     public void GeneratePasswordWithoutUppercaseCharacter_GivenDisabledUppercaseCharOption()
     {
         var enableUppercaseChar = false;
