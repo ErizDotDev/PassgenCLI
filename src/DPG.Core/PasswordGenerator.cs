@@ -33,10 +33,10 @@ public class PasswordGenerator
 
         for (int i = 1; i <= options.PasswordLength; i++)
         {
-            var randomCharPoolIndex = randomizer.Next(0, characterPoolArrLength - 1);
+            var randomCharPoolIndex = randomizer.Next(0, characterPoolArrLength);
             var randomizedPool = availableCharacters[randomCharPoolIndex];
 
-            var randomCharIndex = randomizer.Next(0, randomizedPool.Length - 1);
+            var randomCharIndex = randomizer.Next(0, randomizedPool.Length);
             var randomChar = randomizedPool[randomCharIndex];
 
             password += randomChar;
