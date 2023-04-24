@@ -27,4 +27,18 @@ public class GeneratePasswordShould
         Assert.Matches(NumericCharPattern, result);
         Assert.Matches(SpecialCharPattern, result);
     }
+
+    [Fact]
+    public void GeneratePasswordWithCorrectLength_GivenSpecifiedPasswordLengthInOptions()
+    {
+        int passwordLength = 32;
+        var options = new PasswordGeneratorStandardOptions()
+        {
+            PasswordLength = passwordLength
+        };
+        var result = classUnderTest.GeneratePassword(options);
+
+        Assert.NotEmpty(result);
+        Assert.Equal(result.Length, passwordLength);
+    }
 }

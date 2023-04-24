@@ -19,6 +19,11 @@ public class PasswordGenerator
 
     public string GeneratePassword(PasswordGeneratorStandardOptions options)
     {
+        if (options.PasswordLength <= 0)
+        {
+            throw new Exception("Please provide password length value greater than 0.");
+        }
+
         var password = string.Empty;
 
         var availableCharacters = GetCharacterPool(options);
