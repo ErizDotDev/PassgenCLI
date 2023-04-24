@@ -41,4 +41,19 @@ public class GeneratePasswordShould
         Assert.NotEmpty(result);
         Assert.Equal(result.Length, passwordLength);
     }
+
+    [Fact]
+    public void ThrowException_GivenPasswordLength0InOptions()
+    {
+        int passwordLength = 0;
+        var options = new PasswordGeneratorStandardOptions()
+        {
+            PasswordLength = passwordLength
+        };
+
+        Assert.Throws<Exception>(() =>
+        {
+            var result = classUnderTest.GeneratePassword(options);
+        });
+    }
 }
