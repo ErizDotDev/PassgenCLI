@@ -1,6 +1,6 @@
 ﻿namespace DPG.Core;
 
-internal class PasswordGeneratorStandardOptions
+public class PasswordGeneratorStandardOptions
 {
     public int PasswordLength { get; set; } = 16;
 

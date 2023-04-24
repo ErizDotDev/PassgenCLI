@@ -68,7 +68,7 @@ public class PasswordGeneratorDriver
         return helpMessageBuilder.ToString();
     }
 
-    private string GeneratePasswordViaSelectedMode()
+    public string GeneratePasswordViaSelectedMode()
     {
         if (commandLineArgs.Contains(HELP_ALIAS) ||
             commandLineArgs.Contains(HELP_COMMAND_TEXT) ||

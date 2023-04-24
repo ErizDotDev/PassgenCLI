@@ -1,6 +1,6 @@
 ﻿namespace DPG.Core;
 
-internal class PasswordGenerator
+public class PasswordGenerator
 {
     private string UppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private string LowercaseChars = "abcdefghijklmnopqrstuvwxyz";
