@@ -116,4 +116,19 @@ public class GeneratePasswordShould
         Assert.NotEmpty(result);
         Assert.DoesNotMatch(NumericCharPattern, result);
     }
+
+    [Fact]
+    public void GeneratePasswordWithoutSpecialCharacter_GivenDisabledSpecialCharOption()
+    {
+        var enableSpecialChar = false;
+        var options = new PasswordGeneratorStandardOptions
+        {
+            EnableSpecialCharacters = enableSpecialChar
+        };
+
+        var result = classUnderTest.GeneratePassword(options);
+
+        Assert.NotEmpty(result);
+        Assert.DoesNotMatch(SpecialCharPattern, result);
+    }
 }
