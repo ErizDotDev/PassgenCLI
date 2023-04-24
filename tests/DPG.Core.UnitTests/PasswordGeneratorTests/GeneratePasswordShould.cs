@@ -86,4 +86,34 @@ public class GeneratePasswordShould
         Assert.NotEmpty(result);
         Assert.DoesNotMatch(UppercaseCharPattern, result);
     }
+
+    [Fact]
+    public void GeneratePasswordWithoutLowercaseCharacter_GivenDisabledLowercaseCharOption()
+    {
+        var enableLowercaseChar = false;
+        var options = new PasswordGeneratorStandardOptions
+        {
+            EnableLowercaseCharacters = enableLowercaseChar
+        };
+
+        var result = classUnderTest.GeneratePassword(options);
+
+        Assert.NotEmpty(result);
+        Assert.DoesNotMatch(LowercaseCharPattern, result);
+    }
+
+    [Fact]
+    public void GeneratePasswordWithoutNumericCharacter_GivenDisabledNumericCharOption()
+    {
+        var enableNumericChar = false;
+        var options = new PasswordGeneratorStandardOptions
+        {
+            EnableNumericCharacters = enableNumericChar
+        };
+
+        var result = classUnderTest.GeneratePassword(options);
+
+        Assert.NotEmpty(result);
+        Assert.DoesNotMatch(NumericCharPattern, result);
+    }
 }
