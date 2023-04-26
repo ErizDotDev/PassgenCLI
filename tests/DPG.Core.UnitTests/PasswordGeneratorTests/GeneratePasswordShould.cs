@@ -2,7 +2,7 @@ namespace DPG.Core.UnitTests.PasswordGeneratorTests;
 
 public class GeneratePasswordShould
 {
-    private readonly PasswordGenerator classUnderTest;
+    private readonly StandardPasswordGenerator classUnderTest;
 
     private const string UppercaseCharPattern = @"[A-Z]";
     private const string LowercaseCharPattern = @"[a-z]";
@@ -11,7 +11,7 @@ public class GeneratePasswordShould
 
     public GeneratePasswordShould()
     {
-        classUnderTest = new PasswordGenerator();
+        classUnderTest = new StandardPasswordGenerator();
     }
 
     [Fact]

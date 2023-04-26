@@ -5,7 +5,7 @@ namespace DPG.Core;
 public class PasswordGeneratorDriver
 {
     private string[] commandLineArgs;
-    private readonly PasswordGenerator passwordGenerator;
+    private IPasswordGenerator? passwordGenerator;
 
     private const string HELP_ALIAS = "-h";
     private const string HELP_COMMAND_TEXT = "help";
@@ -26,7 +26,6 @@ public class PasswordGeneratorDriver
     public PasswordGeneratorDriver(string[] args)
     {
         commandLineArgs = args;
-        passwordGenerator = new PasswordGenerator();
     }
 
     public string Execute()
@@ -84,35 +83,13 @@ public class PasswordGeneratorDriver
             return ShowModeHelpMessage();
         }
 
-        var passwordLength = 0;
-
-        if (commandLineArgs.Contains(PASSWORD_LENGTH_OPTION))
+        switch (mode)
         {
-            var passwordLengthOptionIndex = Array.IndexOf(commandLineArgs, PASSWORD_LENGTH_OPTION);
-            passwordLength = GetPasswordLength(passwordLengthOptionIndex);
+            case STANDARD_MODE:
+                return GeneratePasswordViaStandardMode();
+            default:
+                throw new Exception("Incorrect mode specified.");
         }
-        else
-        {
-            passwordLength = DEFAULT_PASSWORD_LENGTH;
-        }
-
-        if (passwordLength < 1)
-        {
-            throw new Exception("Invalid password length provided.");
-        }
-
-        var standardModeOptions = new PasswordGeneratorStandardOptions
-        {
-            PasswordLength = passwordLength,
-            EnableUppercaseCharacters = !commandLineArgs.Contains(DISABLE_UPPERCASE_CHARS_OPTION),
-            EnableLowercaseCharacters = !commandLineArgs.Contains(DISABLE_LOWERCASE_CHARS_OPTION),
-            EnableNumericCharacters = !commandLineArgs.Contains(DISABLE_NUMERIC_CHARS_OPTION),
-            EnableSpecialCharacters = !commandLineArgs.Contains(DISABLE_SPECIAL_CHARS_OPTION)
-        };
-
-        var generatedPassword = passwordGenerator.GeneratePassword(standardModeOptions);
-
-        return generatedPassword;
     }
 
     private string ShowModeHelpMessage()
@@ -146,5 +123,40 @@ public class PasswordGeneratorDriver
         }
 
         return passwordLength;
+    }
+
+    private string GeneratePasswordViaStandardMode()
+    {
+        var passwordLength = 0;
+
+        passwordGenerator = new StandardPasswordGenerator();
+
+        if (commandLineArgs.Contains(PASSWORD_LENGTH_OPTION))
+        {
+            var passwordLengthOptionIndex = Array.IndexOf(commandLineArgs, PASSWORD_LENGTH_OPTION);
+            passwordLength = GetPasswordLength(passwordLengthOptionIndex);
+        }
+        else
+        {
+            passwordLength = DEFAULT_PASSWORD_LENGTH;
+        }
+
+        if (passwordLength < 1)
+        {
+            throw new Exception("Invalid password length provided.");
+        }
+
+        var standardModeOptions = new PasswordGeneratorStandardOptions
+        {
+            PasswordLength = passwordLength,
+            EnableUppercaseCharacters = !commandLineArgs.Contains(DISABLE_UPPERCASE_CHARS_OPTION),
+            EnableLowercaseCharacters = !commandLineArgs.Contains(DISABLE_LOWERCASE_CHARS_OPTION),
+            EnableNumericCharacters = !commandLineArgs.Contains(DISABLE_NUMERIC_CHARS_OPTION),
+            EnableSpecialCharacters = !commandLineArgs.Contains(DISABLE_SPECIAL_CHARS_OPTION)
+        };
+
+        var generatedPassword = passwordGenerator.GeneratePassword(standardModeOptions);
+
+        return generatedPassword;
     }
 }

@@ -1,6 +1,8 @@
 ﻿namespace DPG.Core;
 
-public class PasswordGeneratorStandardOptions
+public interface IPasswordGeneratorOptions { }
+
+public class PasswordGeneratorStandardOptions : IPasswordGeneratorOptions
 {
     public int PasswordLength { get; set; } = 16;
 
@@ -11,4 +13,9 @@ public class PasswordGeneratorStandardOptions
     public bool EnableNumericCharacters { get; set; } = true;
 
     public bool EnableSpecialCharacters { get; set; } = true;
+}
+
+public class PasswordGeneratorEncodeOptions : IPasswordGeneratorOptions
+{
+    public string PassPhrase { get; set; } = string.Empty;
 }

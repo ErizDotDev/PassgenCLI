@@ -1,6 +1,6 @@
 ﻿namespace DPG.Core;
 
-public class PasswordGenerator
+public class StandardPasswordGenerator : IPasswordGenerator
 {
     private string UppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private string LowercaseChars = "abcdefghijklmnopqrstuvwxyz";
@@ -12,21 +12,23 @@ public class PasswordGenerator
     private char[]? NumericCharsArr;
     private char[]? SpecialCharsArr;
 
-    public PasswordGenerator()
+    public StandardPasswordGenerator()
     {
         InitializeCharacterArrays();
     }
 
-    public string GeneratePassword(PasswordGeneratorStandardOptions options)
+    public string GeneratePassword(IPasswordGeneratorOptions _options)
     {
-        if (options.PasswordLength <= 0)
+        var standardOptions = _options! as PasswordGeneratorStandardOptions;
+
+        if (standardOptions!.PasswordLength <= 0)
         {
             throw new Exception("Please provide password length value greater than 0.");
         }
 
         var password = string.Empty;
 
-        var availableCharacters = GetCharacterPool(options);
+        var availableCharacters = GetCharacterPool(standardOptions);
         if (availableCharacters.Count <= 0)
         {
             throw new Exception("No char array selected.");
@@ -35,7 +37,7 @@ public class PasswordGenerator
         var characterPoolArrLength = availableCharacters.Count;
         var randomizer = new Random();
 
-        for (int i = 1; i <= options.PasswordLength; i++)
+        for (int i = 1; i <= standardOptions.PasswordLength; i++)
         {
             var randomCharPoolIndex = randomizer.Next(0, characterPoolArrLength);
             var randomizedPool = availableCharacters[randomCharPoolIndex];
