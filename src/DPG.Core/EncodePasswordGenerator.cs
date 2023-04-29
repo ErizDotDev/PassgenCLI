@@ -12,9 +12,28 @@ public class EncodePasswordGenerator : IPasswordGenerator
     public string GeneratePassword(IPasswordGeneratorOptions options)
     {
         var encodeOptions = options! as PasswordGeneratorEncodeOptions;
-        var passPhraseCharArray = encodeOptions?.PassPhrase.ToCharArray();
 
-        return string.Empty;
+        if (encodeOptions is null || string.IsNullOrEmpty(encodeOptions.PassPhrase))
+        {
+            throw new Exception("Please provide a valid option");
+        }
+
+        var passPhraseCharArray = encodeOptions?.PassPhrase?.ToCharArray();
+        var randomizer = new Random();
+
+        for (int i = 0; i <= passPhraseCharArray?.Length; i++)
+        {
+            if (!characterMap.ContainsKey(passPhraseCharArray[i]))
+            {
+                continue;
+            }
+
+            var substitutes = characterMap[passPhraseCharArray[i]];
+            var randomCharIndex = randomizer.Next(0, substitutes.Length);
+            passPhraseCharArray[i] = substitutes[randomCharIndex];
+        }
+
+        return passPhraseCharArray?.ToString()!;
     }
 
     private Dictionary<char, char[]> GetCharacterMap()
