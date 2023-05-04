@@ -21,9 +21,9 @@ public class EncodePasswordGenerator : IPasswordGenerator
         var passPhraseCharArray = encodeOptions?.PassPhrase?.ToCharArray();
         var randomizer = new Random();
 
-        for (int i = 0; i <= passPhraseCharArray?.Length; i++)
+        for (int i = 0; i <= passPhraseCharArray?.Length - 1; i++)
         {
-            if (!characterMap.ContainsKey(passPhraseCharArray[i]))
+            if (!characterMap.ContainsKey(passPhraseCharArray![i]))
             {
                 continue;
             }
@@ -33,7 +33,7 @@ public class EncodePasswordGenerator : IPasswordGenerator
             passPhraseCharArray[i] = substitutes[randomCharIndex];
         }
 
-        return passPhraseCharArray?.ToString()!;
+        return new string(passPhraseCharArray);
     }
 
     private Dictionary<char, char[]> GetCharacterMap()
