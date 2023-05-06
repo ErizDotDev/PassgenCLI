@@ -15,7 +15,7 @@ public class EncodePasswordGenerator : IPasswordGenerator
 
         if (encodeOptions is null || string.IsNullOrEmpty(encodeOptions.PassPhrase))
         {
-            throw new Exception("Please provide a valid option");
+            throw new Exception("Please provide a valid password phrase");
         }
 
         var passPhraseCharArray = encodeOptions?.PassPhrase?.ToCharArray();
@@ -33,7 +33,11 @@ public class EncodePasswordGenerator : IPasswordGenerator
             passPhraseCharArray[i] = substitutes[randomCharIndex];
         }
 
-        return new string(passPhraseCharArray);
+        var encodedPassword = HandleSubstituteWhiteSpaceWithUnderscoreOption(
+            new string(passPhraseCharArray),
+            encodeOptions!.SubstituteSpacesWithUnderscores);
+
+        return encodedPassword;
     }
 
     private Dictionary<char, char[]> GetCharacterMap()
@@ -67,5 +71,15 @@ public class EncodePasswordGenerator : IPasswordGenerator
             { 'y', new char[] { 'y', 'Y', '?' } },
             { 'z', new char[] { 'z', 'Z' } },
         };
+    }
+
+    private string HandleSubstituteWhiteSpaceWithUnderscoreOption(string encodedPassword, bool shouldSubstitute)
+    {
+        if (shouldSubstitute)
+        {
+            return encodedPassword.Replace(" ", "_");
+        }
+
+        return encodedPassword.Replace(" ", "");
     }
 }
