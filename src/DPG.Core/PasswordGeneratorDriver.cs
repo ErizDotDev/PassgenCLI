@@ -21,6 +21,8 @@ public class PasswordGeneratorDriver
     private const string DISABLE_NUMERIC_CHARS_OPTION = "--disable-numeric-chars";
     private const string DISABLE_SPECIAL_CHARS_OPTION = "--disable-special-chars";
 
+    private const string SUB_SPACES_WITH_UNDERSCORE = "--substitute-whitespace-with-underscore";
+
     private const int DEFAULT_PASSWORD_LENGTH = 16;
 
     public PasswordGeneratorDriver(string[] args)
@@ -175,6 +177,7 @@ public class PasswordGeneratorDriver
         var encodeModeOptions = new PasswordGeneratorEncodeOptions
         {
             PassPhrase = passPhrase,
+            SubstituteSpacesWithUnderscores = commandLineArgs.Contains(SUB_SPACES_WITH_UNDERSCORE)
         };
 
         var generatedPassword = passwordGenerator.GeneratePassword(encodeModeOptions);

@@ -18,4 +18,6 @@ public class PasswordGeneratorStandardOptions : IPasswordGeneratorOptions
 public class PasswordGeneratorEncodeOptions : IPasswordGeneratorOptions
 {
     public string PassPhrase { get; set; } = string.Empty;
+
+    public bool SubstituteSpacesWithUnderscores { get; set; } = false;
 }
