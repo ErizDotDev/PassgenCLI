@@ -87,6 +87,8 @@ public class PasswordGeneratorDriver
         {
             case STANDARD_MODE:
                 return GeneratePasswordViaStandardMode();
+            case ENCODE_MODE:
+                return GeneratePasswordViaEncodeMode();
             default:
                 throw new Exception("Incorrect mode specified.");
         }
@@ -156,6 +158,26 @@ public class PasswordGeneratorDriver
         };
 
         var generatedPassword = passwordGenerator.GeneratePassword(standardModeOptions);
+
+        return generatedPassword;
+    }
+
+    private string GeneratePasswordViaEncodeMode()
+    {
+        passwordGenerator = new EncodePasswordGenerator();
+
+        var passPhrase = commandLineArgs[2];
+        if (passPhrase is null || string.IsNullOrEmpty(passPhrase))
+        {
+            throw new Exception("Please provide a valid pass phrase.");
+        }
+
+        var encodeModeOptions = new PasswordGeneratorEncodeOptions
+        {
+            PassPhrase = passPhrase,
+        };
+
+        var generatedPassword = passwordGenerator.GeneratePassword(encodeModeOptions);
 
         return generatedPassword;
     }
