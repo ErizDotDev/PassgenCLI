@@ -105,7 +105,7 @@ public class PasswordGeneratorDriver
             .AppendLine("Usage")
             .AppendLine("dpg mode [standard | encode] [options]")
             .AppendLine();
-        modeHelpMessageBuilder.AppendLine("Options: (Note: Options below are only placeholder values)")
+        modeHelpMessageBuilder.AppendLine("Options:")
             .AppendLine("[--password-length <password length>]")
             .AppendLine("[--disable-uppercase-chars]")
             .AppendLine("[--disable-lowercase-chars]")
@@ -131,6 +131,11 @@ public class PasswordGeneratorDriver
 
     private string GeneratePasswordViaStandardMode()
     {
+        if (commandLineArgs.Contains(HELP_ALIAS))
+        {
+            return ShowStandardModeHelpMessage();
+        }
+
         var passwordLength = 0;
 
         passwordGenerator = new StandardPasswordGenerator();
@@ -166,6 +171,11 @@ public class PasswordGeneratorDriver
 
     private string GeneratePasswordViaEncodeMode()
     {
+        if (commandLineArgs.Contains(HELP_ALIAS))
+        {
+            return ShowEncodeModeHelpMessage();
+        }
+
         passwordGenerator = new EncodePasswordGenerator();
 
         var passPhrase = commandLineArgs[2];
@@ -183,5 +193,36 @@ public class PasswordGeneratorDriver
         var generatedPassword = passwordGenerator.GeneratePassword(encodeModeOptions);
 
         return generatedPassword;
+    }
+
+    private string ShowStandardModeHelpMessage()
+    {
+        var standardModeHelpMessageBuilder = new StringBuilder();
+
+        standardModeHelpMessageBuilder.AppendLine("Usage")
+            .AppendLine("dpg mode standard [...options]");
+
+        standardModeHelpMessageBuilder.AppendLine("Options:")
+            .AppendLine("[--password-length <password length>]")
+            .AppendLine("[--disable-uppercase-chars]")
+            .AppendLine("[--disable-lowercase-chars]")
+            .AppendLine("[--disable-numeric-chars]")
+            .AppendLine("[--disable-special-chars]");
+
+        return standardModeHelpMessageBuilder.ToString();
+    }
+
+
+    private string ShowEncodeModeHelpMessage()
+    {
+        var standardModeHelpMessageBuilder = new StringBuilder();
+
+        standardModeHelpMessageBuilder.AppendLine("Usage")
+            .AppendLine("dpg mode encode [...options]");
+
+        standardModeHelpMessageBuilder.AppendLine("Options:")
+            .AppendLine("[--substitute-whitespace-with-underscore]");
+
+        return standardModeHelpMessageBuilder.ToString();
     }
 }
