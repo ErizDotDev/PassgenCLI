@@ -23,7 +23,7 @@ public class PasswordGeneratorDriver
 
     private const string SUB_SPACES_WITH_UNDERSCORE = "--substitute-whitespace-with-underscore";
 
-    private const int DEFAULT_PASSWORD_LENGTH = 16;
+    private static readonly int DEFAULT_PASSWORD_LENGTH = 16;
 
     public PasswordGeneratorDriver(string[] args)
     {
