@@ -55,19 +55,6 @@ public class PasswordGeneratorDriver
         return string.Empty;
     }
 
-    private string ShowHelpMessage()
-    {
-        var helpMessageBuilder = new StringBuilder();
-
-        helpMessageBuilder.AppendLine("dpg <command>");
-        helpMessageBuilder.AppendLine()
-            .AppendLine("Usage");
-        helpMessageBuilder.AppendLine()
-            .AppendLine("dpg mode\tset password generation mode");
-
-        return helpMessageBuilder.ToString();
-    }
-
     public string GeneratePasswordViaSelectedMode()
     {
         if (commandLineArgs.Contains(HelpCommand.Name) ||

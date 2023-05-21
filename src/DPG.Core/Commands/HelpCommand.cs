@@ -14,8 +14,20 @@ internal static class HelpCommand
 
         helpMessageBuilder.AppendLine("dpg <command>");
         helpMessageBuilder.AppendLine()
-            .AppendLine("Usage");
+            .AppendLine("Usage")
+            .AppendLine()
+            .AppendLine(GetMainCommandDescriptions());
 
         Console.WriteLine(helpMessageBuilder.ToString());
+    }
+
+    private static string GetMainCommandDescriptions()
+    {
+        var descriptionBuilder = new StringBuilder();
+
+        descriptionBuilder
+            .Append($"dpg {GenerateModeCommand.Name}\t{GenerateModeCommand.Description}");
+
+        return descriptionBuilder.ToString();
     }
 }
