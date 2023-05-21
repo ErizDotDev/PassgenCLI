@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using DPG.Core.Commands;
+using System.Text;
 
 namespace DPG.Core;
 
@@ -7,8 +8,6 @@ public class PasswordGeneratorDriver
     private string[] commandLineArgs;
     private IPasswordGenerator? passwordGenerator;
 
-    private const string HELP_ALIAS = "-h";
-    private const string HELP_COMMAND_TEXT = "help";
     private const string MODE_ALIAS = "-m";
     private const string MODE_COMMAND_TEXT = "mode";
 
@@ -34,16 +33,18 @@ public class PasswordGeneratorDriver
     {
         if (commandLineArgs.Length == 0)
         {
-            return ShowHelpMessage();
+            HelpCommand.Execute();
+            return string.Empty;
         }
 
         switch (commandLineArgs[0])
         {
-            case HELP_ALIAS:
-            case HELP_COMMAND_TEXT:
+            case HelpCommand.Name:
+            case HelpCommand.Alias:
                 if (commandLineArgs.Length == 1)
                 {
-                    return ShowHelpMessage();
+                    HelpCommand.Execute();
+                    return string.Empty;
                 }
 
                 goto case MODE_ALIAS;
@@ -71,8 +72,8 @@ public class PasswordGeneratorDriver
 
     public string GeneratePasswordViaSelectedMode()
     {
-        if (commandLineArgs.Contains(HELP_ALIAS) ||
-            commandLineArgs.Contains(HELP_COMMAND_TEXT) ||
+        if (commandLineArgs.Contains(HelpCommand.Name) ||
+            commandLineArgs.Contains(HelpCommand.Alias) ||
             commandLineArgs.Length == 1)
         {
             return ShowModeHelpMessage();
@@ -131,7 +132,7 @@ public class PasswordGeneratorDriver
 
     private string GeneratePasswordViaStandardMode()
     {
-        if (commandLineArgs.Contains(HELP_ALIAS))
+        if (commandLineArgs.Contains(HelpCommand.Alias))
         {
             return ShowStandardModeHelpMessage();
         }
@@ -171,7 +172,7 @@ public class PasswordGeneratorDriver
 
     private string GeneratePasswordViaEncodeMode()
     {
-        if (commandLineArgs.Contains(HELP_ALIAS))
+        if (commandLineArgs.Contains(HelpCommand.Alias))
         {
             return ShowEncodeModeHelpMessage();
         }
