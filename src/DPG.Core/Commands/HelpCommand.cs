@@ -1,4 +1,6 @@
-﻿namespace DPG.Core.Commands;
+﻿using System.Text;
+
+namespace DPG.Core.Commands;
 
 internal static class HelpCommand
 {
@@ -8,6 +10,12 @@ internal static class HelpCommand
 
     public static void Execute()
     {
-        Console.WriteLine("Hello Help!");
+        var helpMessageBuilder = new StringBuilder();
+
+        helpMessageBuilder.AppendLine("dpg <command>");
+        helpMessageBuilder.AppendLine()
+            .AppendLine("Usage");
+
+        Console.WriteLine(helpMessageBuilder.ToString());
     }
 }
