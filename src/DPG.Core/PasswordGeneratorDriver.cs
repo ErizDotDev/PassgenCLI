@@ -8,9 +8,6 @@ public class PasswordGeneratorDriver
     private string[] commandLineArgs;
     private IPasswordGenerator? passwordGenerator;
 
-    private const string MODE_ALIAS = "-m";
-    private const string MODE_COMMAND_TEXT = "mode";
-
     private const string STANDARD_MODE = "standard";
     private const string ENCODE_MODE = "encode";
 
@@ -47,11 +44,12 @@ public class PasswordGeneratorDriver
                     return string.Empty;
                 }
 
-                goto case MODE_ALIAS;
+                goto case GenerateModeCommand.Alias;
 
-            case MODE_ALIAS:
-            case MODE_COMMAND_TEXT:
-                return GeneratePasswordViaSelectedMode();
+            case GenerateModeCommand.Name:
+            case GenerateModeCommand.Alias:
+                GenerateModeCommand.Execute();
+                return string.Empty;
         }
 
         return string.Empty;
