@@ -26,33 +26,25 @@ public class PasswordGeneratorDriver
         commandLineArgs = args;
     }
 
-    public string Execute()
+    public void Execute()
     {
         if (commandLineArgs.Length == 0)
-        {
             HelpCommand.Execute();
-            return string.Empty;
-        }
 
         switch (commandLineArgs[0])
         {
             case HelpCommand.Name:
             case HelpCommand.Alias:
                 if (commandLineArgs.Length == 1)
-                {
                     HelpCommand.Execute();
-                    return string.Empty;
-                }
 
                 goto case GenerateModeCommand.Alias;
 
             case GenerateModeCommand.Name:
             case GenerateModeCommand.Alias:
                 GenerateModeCommand.Execute();
-                return string.Empty;
+                break;
         }
-
-        return string.Empty;
     }
 
     public string GeneratePasswordViaSelectedMode()
