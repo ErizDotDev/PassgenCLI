@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using DPG.Core.Commands.GenerateMode;
 
 namespace DPG.Core.Commands;
 

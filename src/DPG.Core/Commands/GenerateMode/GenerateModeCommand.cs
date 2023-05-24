@@ -1,4 +1,4 @@
-﻿namespace DPG.Core.Commands;
+﻿namespace DPG.Core.Commands.GenerateMode;
 
 internal static class GenerateModeCommand
 {
@@ -17,7 +17,11 @@ internal static class GenerateModeCommand
         if (optionInput.Contains(HelpCommand.Name) ||
             optionInput.Contains(HelpCommand.Alias) ||
             optionInput.Length == 1)
+        {
             ShowHelpMessage();
+        }
+
+        var mode = optionInput[0];
     }
 
     private static void ShowHelpMessage()
