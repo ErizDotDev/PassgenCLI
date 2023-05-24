@@ -10,8 +10,18 @@ internal static class GenerateModeCommand
 
     public const string HelpMessage = "help message for mode";
 
-    public static void Execute()
+    public static void Execute(string[] optionInput)
     {
         Console.WriteLine("Executing the generate mode command.");
+
+        if (optionInput.Contains(HelpCommand.Name) ||
+            optionInput.Contains(HelpCommand.Alias) ||
+            optionInput.Length == 1)
+            ShowHelpMessage();
+    }
+
+    private static void ShowHelpMessage()
+    {
+        Console.WriteLine(HelpMessage);
     }
 }

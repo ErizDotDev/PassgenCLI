@@ -42,7 +42,8 @@ public class PasswordGeneratorDriver
 
             case GenerateModeCommand.Name:
             case GenerateModeCommand.Alias:
-                GenerateModeCommand.Execute();
+                var commandLineOptions = commandLineArgs.Skip(1).ToArray();
+                GenerateModeCommand.Execute(commandLineOptions);
                 break;
         }
     }
