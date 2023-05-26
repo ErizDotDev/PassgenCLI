@@ -1,5 +1,5 @@
-﻿using System.Text;
-using DPG.Core.Commands.GenerateMode;
+﻿using DPG.Core.Commands.GenerateMode;
+using System.Text;
 
 namespace DPG.Core.Commands;
 
@@ -13,9 +13,9 @@ internal static class HelpCommand
     {
         var helpMessageBuilder = new StringBuilder();
 
-        helpMessageBuilder.AppendLine("dpg <command>");
+        helpMessageBuilder.AppendLine("usage: dpg <command>");
         helpMessageBuilder.AppendLine()
-            .AppendLine("Usage")
+            .AppendLine("Usage:")
             .AppendLine()
             .AppendLine(GetMainCommandDescriptions());
 

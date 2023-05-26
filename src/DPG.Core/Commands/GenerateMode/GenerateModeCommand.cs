@@ -1,4 +1,7 @@
-﻿namespace DPG.Core.Commands.GenerateMode;
+﻿using System.Reflection;
+using System.Text;
+
+namespace DPG.Core.Commands.GenerateMode;
 
 internal static class GenerateModeCommand
 {
@@ -8,7 +11,7 @@ internal static class GenerateModeCommand
 
     public const string Description = "set mode for password generator";
 
-    public const string HelpMessage = "help message for mode";
+    public const string HelpMessage = "Set the password generator mode to be used.";
 
     public static void Execute(string[] optionInput)
     {
@@ -21,11 +24,63 @@ internal static class GenerateModeCommand
             ShowHelpMessage();
         }
 
-        var mode = optionInput[0];
     }
 
     private static void ShowHelpMessage()
     {
-        Console.WriteLine(HelpMessage);
+        var helpMessage = BuildMessageContent();
+
+        Console.WriteLine(helpMessage);
+    }
+
+    private static string BuildMessageContent()
+    {
+        var modeHelpMessageBuilder = new StringBuilder();
+
+        modeHelpMessageBuilder.AppendLine()
+            .AppendLine("usage: dpg mode [options] [arguments]")
+            .AppendLine()
+            .AppendLine(HelpMessage)
+            .AppendLine();
+
+        var generateModeOptions = GetGenerateModeOptionsContent();
+
+        modeHelpMessageBuilder.AppendLine("Options:")
+            .AppendLine()
+            .AppendLine(generateModeOptions);
+
+        return modeHelpMessageBuilder.ToString();
+    }
+
+    private static string GetGenerateModeOptionsContent()
+    {
+        var optionsMessageBuilder = new StringBuilder();
+        var options = GetOptions();
+        var targetPropName = "Name";
+
+        foreach (var option in options)
+        {
+            foreach (var propInfo in option.GetFields())
+            {
+                if (propInfo.Name != targetPropName)
+                    continue;
+
+                var propValue = propInfo.GetRawConstantValue();
+                optionsMessageBuilder.AppendLine($"\t{propValue}");
+            }
+        }
+
+        return optionsMessageBuilder.ToString();
+    }
+
+    private static IEnumerable<Type>? GetOptions()
+    {
+        var optionsNamespace = "DPG.Core.Commands.GenerateMode.Options";
+        var options = Assembly.GetExecutingAssembly().GetTypes()
+            .Where(t => t.IsClass && t.Namespace == optionsNamespace
+                && t.IsSealed && t.IsAbstract)
+            .ToList();
+
+        return options;
     }
 }
