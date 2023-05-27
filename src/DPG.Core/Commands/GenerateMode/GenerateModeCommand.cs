@@ -3,7 +3,7 @@ using System.Text;
 
 namespace DPG.Core.Commands.GenerateMode;
 
-internal static class GenerateModeCommand
+internal class GenerateModeCommand : BaseCommand
 {
     public const string Name = "mode";
 
@@ -13,7 +13,7 @@ internal static class GenerateModeCommand
 
     public const string HelpMessage = "Set the password generator mode to be used.";
 
-    public static void Execute(string[] optionInput)
+    public override void Execute(string[] optionInput)
     {
         Console.WriteLine("Executing the generate mode command.");
 
@@ -24,9 +24,21 @@ internal static class GenerateModeCommand
             ShowHelpMessage();
         }
 
+        try
+        {
+            var mode = optionInput[0];
+        }
+        catch (IndexOutOfRangeException)
+        {
+            ShowHelpMessage();
+        }
+        catch
+        {
+            Console.WriteLine("Something went wrong with the application!");
+        }
     }
 
-    private static void ShowHelpMessage()
+    public override void ShowHelpMessage()
     {
         var helpMessage = BuildMessageContent();
 
