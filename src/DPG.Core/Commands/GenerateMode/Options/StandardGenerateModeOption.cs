@@ -1,6 +1,6 @@
 ﻿namespace DPG.Core.Commands.GenerateMode.Options;
 
-internal static class StandardGenerateModeOption
+internal class StandardGenerateModeOption
 {
     public const string Name = "standard";
 }

@@ -32,12 +32,16 @@ internal class GenerateModeCommand : BaseCommand
         try
         {
             var mode = optionInput[0];
+            var (isModeExists, optionType) = TryGetOptionType(mode);
 
-            if (!ModeOptionExists(mode))
+            if (!isModeExists)
             {
                 Console.WriteLine("Error: provided mode option not found!");
                 ShowHelpMessage();
             }
+
+            var modeOption = Activator.CreateInstance(optionType);
+            Console.WriteLine(modeOption);
 
             Console.WriteLine("Successfully extracted command options for generate mode.");
         }
@@ -101,17 +105,17 @@ internal class GenerateModeCommand : BaseCommand
     {
         var optionsNamespace = "DPG.Core.Commands.GenerateMode.Options";
         var options = Assembly.GetExecutingAssembly().GetTypes()
-            .Where(t => t.IsClass && t.Namespace == optionsNamespace
-                && t.IsSealed && t.IsAbstract)
+            .Where(t => t.IsClass && t.Namespace == optionsNamespace)
             .ToList();
 
         return options;
     }
 
-    private bool ModeOptionExists(string providedOption)
+    private (bool, Type) TryGetOptionType(string providedOption)
     {
         bool isExists = false;
         var targetPropName = "Name";
+        Type optionType = null!;
 
         foreach (var option in options!)
         {
@@ -122,10 +126,14 @@ internal class GenerateModeCommand : BaseCommand
 
                 var propValue = propInfo.GetRawConstantValue() as string;
                 if (propValue == providedOption)
-                    return true;
+                {
+                    isExists = true;
+                    optionType = option;
+                    break;
+                }
             }
         }
 
-        return isExists;
+        return (isExists, optionType);
     }
 }

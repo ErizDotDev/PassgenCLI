@@ -1,6 +1,6 @@
 ﻿namespace DPG.Core.Commands.GenerateMode.Options;
 
-internal static class EncodeGenerateModeOption
+internal class EncodeGenerateModeOption
 {
     public const string Name = "encode";
 }
