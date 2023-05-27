@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DPG.CLI": {
+      "commandName": "Project",
+      "commandLineArgs": "mode help"
+    }
+  }
+}
