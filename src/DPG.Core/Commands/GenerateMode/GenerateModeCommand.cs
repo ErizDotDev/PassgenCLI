@@ -13,20 +13,33 @@ internal class GenerateModeCommand : BaseCommand
 
     public const string HelpMessage = "Set the password generator mode to be used.";
 
+    private readonly IEnumerable<Type>? options;
+
+    public GenerateModeCommand()
+    {
+        options = GetOptions();
+    }
+
     public override void Execute(string[] optionInput)
     {
-        Console.WriteLine("Executing the generate mode command.");
-
         if (optionInput.Contains(HelpCommand.Name) ||
-            optionInput.Contains(HelpCommand.Alias) ||
-            optionInput.Length == 1)
+            optionInput.Contains(HelpCommand.Alias))
         {
             ShowHelpMessage();
+            return;
         }
 
         try
         {
             var mode = optionInput[0];
+
+            if (!ModeOptionExists(mode))
+            {
+                Console.WriteLine("Error: provided mode option not found!");
+                ShowHelpMessage();
+            }
+
+            Console.WriteLine("Successfully extracted command options for generate mode.");
         }
         catch (IndexOutOfRangeException)
         {
@@ -45,7 +58,7 @@ internal class GenerateModeCommand : BaseCommand
         Console.WriteLine(helpMessage);
     }
 
-    private static string BuildMessageContent()
+    private string BuildMessageContent()
     {
         var modeHelpMessageBuilder = new StringBuilder();
 
@@ -64,10 +77,9 @@ internal class GenerateModeCommand : BaseCommand
         return modeHelpMessageBuilder.ToString();
     }
 
-    private static string GetGenerateModeOptionsContent()
+    private string GetGenerateModeOptionsContent()
     {
         var optionsMessageBuilder = new StringBuilder();
-        var options = GetOptions();
         var targetPropName = "Name";
 
         foreach (var option in options!)
@@ -85,7 +97,7 @@ internal class GenerateModeCommand : BaseCommand
         return optionsMessageBuilder.ToString();
     }
 
-    private static IEnumerable<Type>? GetOptions()
+    private IEnumerable<Type>? GetOptions()
     {
         var optionsNamespace = "DPG.Core.Commands.GenerateMode.Options";
         var options = Assembly.GetExecutingAssembly().GetTypes()
@@ -94,5 +106,26 @@ internal class GenerateModeCommand : BaseCommand
             .ToList();
 
         return options;
+    }
+
+    private bool ModeOptionExists(string providedOption)
+    {
+        bool isExists = false;
+        var targetPropName = "Name";
+
+        foreach (var option in options!)
+        {
+            foreach (var propInfo in option.GetFields())
+            {
+                if (propInfo.Name != targetPropName)
+                    continue;
+
+                var propValue = propInfo.GetRawConstantValue() as string;
+                if (propValue == providedOption)
+                    return true;
+            }
+        }
+
+        return isExists;
     }
 }
