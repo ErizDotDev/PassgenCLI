@@ -3,13 +3,13 @@ using System.Text;
 
 namespace DPG.Core.Commands;
 
-internal static class HelpCommand
+internal class HelpCommand : BaseCommand
 {
     public const string Name = "help";
 
     public const string Alias = "-h";
 
-    public static void Execute()
+    public override void ShowHelpMessage()
     {
         var helpMessageBuilder = new StringBuilder();
 

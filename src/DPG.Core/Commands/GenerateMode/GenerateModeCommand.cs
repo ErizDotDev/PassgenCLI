@@ -58,7 +58,7 @@ internal static class GenerateModeCommand
         var options = GetOptions();
         var targetPropName = "Name";
 
-        foreach (var option in options)
+        foreach (var option in options!)
         {
             foreach (var propInfo in option.GetFields())
             {

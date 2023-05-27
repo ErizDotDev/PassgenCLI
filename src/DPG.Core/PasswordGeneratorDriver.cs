@@ -29,15 +29,17 @@ public class PasswordGeneratorDriver
 
     public void Execute()
     {
+        BaseCommand command = new HelpCommand();
+
         if (commandLineArgs.Length == 0)
-            HelpCommand.Execute();
+            command.ShowHelpMessage();
 
         switch (commandLineArgs[0])
         {
             case HelpCommand.Name:
             case HelpCommand.Alias:
                 if (commandLineArgs.Length == 1)
-                    HelpCommand.Execute();
+                    command.ShowHelpMessage();
 
                 goto case GenerateModeCommand.Alias;
 
