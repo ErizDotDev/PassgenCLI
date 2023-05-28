@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using DPG.Core.Commands.GenerateMode.Options;
+using System.Reflection;
 using System.Text;
 
 namespace DPG.Core.Commands.GenerateMode;
@@ -40,10 +41,9 @@ internal class GenerateModeCommand : BaseCommand
                 ShowHelpMessage();
             }
 
-            var modeOption = Activator.CreateInstance(optionType);
-            Console.WriteLine(modeOption);
-
-            Console.WriteLine("Successfully extracted command options for generate mode.");
+            var modeOption = Activator.CreateInstance(optionType) as IGenerateModeOption;
+            var commandArgs = optionInput.Skip(1).ToArray();
+            modeOption!.Execute(commandArgs);
         }
         catch (IndexOutOfRangeException)
         {
@@ -84,17 +84,22 @@ internal class GenerateModeCommand : BaseCommand
     private string GetGenerateModeOptionsContent()
     {
         var optionsMessageBuilder = new StringBuilder();
-        var targetPropName = "Name";
+        var targetPropNames = new string[] { "Name", "Description" };
 
         foreach (var option in options!)
         {
             foreach (var propInfo in option.GetFields())
             {
-                if (propInfo.Name != targetPropName)
+                if (!targetPropNames.Contains(propInfo.Name))
                     continue;
 
                 var propValue = propInfo.GetRawConstantValue();
-                optionsMessageBuilder.AppendLine($"\t{propValue}");
+
+                if (targetPropNames[0] == propInfo.Name)
+                    optionsMessageBuilder.Append($"  {propValue}");
+
+                if (targetPropNames[1] == propInfo.Name)
+                    optionsMessageBuilder.AppendLine($"\t\t{propValue}");
             }
         }
 
